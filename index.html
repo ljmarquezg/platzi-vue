@@ -35,13 +35,13 @@
       fullName() {
         return `${this.firstName} ${this.lastName}`;
       },
-      getDate() {
+      today() {
         return new Date().toLocaleDateString();
       }
     },
     template: `
       <div>{{ fullName }}</div>
-      <div>{{ getDate }}</div>
+      <div>{{ today }}</div>
     `
   }).mount('#app');
 </script>
