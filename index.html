@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My First Web Page</title>
+</head>
+<body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<div id="app">
+  <img src="" alt="">
+</div>
+<script>
+  const vm = Vue.createApp({
+    data() {
+      return {
+        img: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
+        alt: 'Test Image'
+      }
+    },
+    template: `<img v-bind:src="img" v-bind:alt="alt">`
+  }).mount('#app');
+</script>
+</body>
+</html>
+
