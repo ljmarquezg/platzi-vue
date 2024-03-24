@@ -3,6 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>My First Web Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .counter {
+      font-size: 1.5em;
+      margin: 0 10px;
+    }
+  </style>
 </head>
 <body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -10,14 +33,28 @@
   <img src="" alt="">
 </div>
 <script>
+  const initialValue = 0;
   const vm = Vue.createApp({
     data() {
       return {
-        img: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
-        alt: 'Test Image'
+        counter: initialValue
       }
     },
-    template: `<img v-bind:src="img" v-bind:alt="alt">`
+    methods: {
+      increment() {
+        this.counter++
+      },
+      decrement() {
+        this.counter--
+      },
+    },
+    template: `
+      <form>
+        <button type="button" v-on:click="decrement">-</button>
+        <span class="counter">{{ counter }}</span>
+        <button type="button" v-on:click="increment">+</button>
+      </form>
+    `
   }).mount('#app');
 </script>
 </body>
