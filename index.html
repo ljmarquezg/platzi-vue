@@ -8,40 +8,47 @@
       font-family: Arial, sans-serif;
       margin: 0;
     }
-    input {
+
+    button {
+      background-color: #3498db;
       border: solid 1px #3498db;
-      color: #3498db;
+      color: white;
       padding: 10px 15px;
       margin: 10px;
       border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <div id="app">
-  <img src="" alt="">
+  <img
+    src=""
+    alt=""
+  >
 </div>
 <script>
   const vm = Vue.createApp({
     data() {
       return {
-        firstName: 'Juan',
-        lastName: 'Mendez',
-        now: new Date()
+        text: 'Puerta cerrada',
+        open: false,
+      }
+    },
+    watch: {
+      open(value) {
+        this.text = value ? 'Puerta abierta' : 'Puerta cerrada';
       }
     },
     computed: {
-      fullName() {
-        return `${this.firstName} ${this.lastName}`;
-      },
-      today() {
-        return new Date().toLocaleDateString();
+      label() {
+        return this.open ? 'Cerrar puerta' : 'Abrir puerta';
       }
     },
     template: `
-      <div>{{ fullName }}</div>
-      <div>{{ today }}</div>
+      <div>{{ text }}</div>
+      <button @click="open = !open">{{ label }}</button>
     `
   }).mount('#app');
 </script>
