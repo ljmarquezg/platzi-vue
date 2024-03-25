@@ -28,6 +28,10 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      opacity: .5;
+    }
+
     .close {
       background-color: #ff9287;
       border: solid 1px #e74c3c;
@@ -37,23 +41,45 @@
       background-color: #2ecc71;
       border: solid 1px #2ecc71;
     }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item {
+      border: solid 1px #e5e5e5;
+      border-radius: 12px;
+      background: white;
+      padding: 8px 12px;
+      margin: 8px 0;
+    }
   </style>
 </head>
 <body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<div id="app">
-  <img
-    src=""
-    alt=""
-  >
-</div>
+<div id="app"></div>
 <script>
   const vm = Vue.createApp({
     data() {
       return {
         text: 'Accede a tu cuenta',
         open: false,
-        username: ''
+        username: '',
+        posts: [
+          {
+            title: 'Post 1',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+          },
+          {
+            title: 'Post 2',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+          },
+          {
+            title: 'Post 3',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+          },
+        ]
       }
     },
     watch: {
@@ -67,6 +93,9 @@
     computed: {
       status() {
         return this.open ? 'open' : 'close';
+      },
+      toggleDisbleButton() {
+        return this.username === '';
       }
     },
     template: `
@@ -77,6 +106,16 @@
         <h2>{{ text }}</h2>
         <div v-if="open">
           <p>Hola {{ username }}, bienvenido a tu cuenta</p>
+          <section class="list">
+            <article
+              class="item"
+              v-for="(post, i) in posts"
+              :key="i"
+            >
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.content }}</p>
+            </article>
+          </section>
         </div>
         <div v-else>
           <label>Username</label>
@@ -86,7 +125,7 @@
             v-model="username"
           >
         </div>
-        <button @click="open = !open">
+        <button @click="open = !open" :disabled="toggleDisbleButton">
           <span v-if="!open">
             Acceder
           </span>
