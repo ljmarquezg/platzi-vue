@@ -103,146 +103,28 @@
   const app = Vue.createApp({
     data() {
       return {
-        text: 'Accede a tu cuenta',
-        open: false,
-        username: '',
-        posts: [
-          {
-            title: 'Post 1',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-          },
-          {
-            title: 'Post 2',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-          },
-          {
-            title: 'Post 3',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-          },
-        ],
-        newPost: {
-          title: '',
-          content: ''
-        }
-      }
-    },
-    watch: {
-      open(value) {
-        this.text = value ? 'Posts' : 'Accede a tu cuenta'
-        if(!value) {
-          this.username = "";
-        }
-      }
-    },
-    methods: {
-      createPost() {
-        this.posts.push({
-          title: this.newPost.title,
-          content: this.newPost.content
-        });
-        this.newPost.title = '';
-        this.newPost.content = '';
-      },
-      deletePost(index) {
-        console.log(index);
-        this.posts.splice(index, 1);
-      }
-    },
-    computed: {
-      status() {
-        return this.open ? 'open' : 'close';
-      },
-      toggleDisbleButton() {
-        return this.username === '';
-      },
-
-      buttonPublishPostDisabled() {
-        const { title, content } = this.newPost;
-        return title === '' || content === '';
+        items: ['Item 1', 'Item 2', 'Item 3']
       }
     },
     template: `
-      <div
-        class="container"
-        :class="[status]"
-      >
-        <h2>{{ text }}</h2>
-        <div v-if="open">
-          <p>Hola {{ username }}, bienvenido a tu cuenta</p>
-
-          <!-- Form Section -->
-          <form @submit.prevent="createPost">
-            <label for="title">Título</label>
-            <input
-              type="text"
-              id="title"
-              placeholder="Título"
-              v-model="newPost.title"
-            >
-            <label for="content">Contenido</label>
-            <textarea
-              id="content"
-              placeholder="Contenido"
-              v-model="newPost.content"
-            ></textarea>
-            <button
-              class="btn-submit"
-              :disabled="buttonPublishPostDisabled"
-            >Publicar
-            </button>
-          </form>
-
-          <!-- Post Section -->
-          <section class="list">
-            <item
-              class="item"
-              v-for="(post, i) in posts"
-              :key="i"
-              :post="post"
-              @delete="deletePost"
-            />
-          </section>
-        </div>
-        <div v-else>
-          <label>Username</label>
-          <input
-            type="text"
-            placeholder="Usuario"
-            v-model="username"
-          >
-        </div>
-        <button
-          @click="open = !open"
-          :disabled="toggleDisbleButton"
-        >
-          <span v-if="!open">
-            Acceder
-          </span>
-          <span v-else>
-            Salir
-          </span>
-        </button>
-      </div>
+    <ul>
+      <li>
+        <v-item v-for="item in items" :text="item"></v-item>
+      </li>
+    </ul>
     `
   });
 
-  app.component('item', {
-    props: ['post'],
+  app.component('v-item', {
+    props: {
+      text: {
+        default: 'Texto Vacío'
+      }
+    },
     template: `
-      <article class="item">
-        <div class="title-holder">
-          <h3>{{ post.title }}</h3>
-          <button
-            class="btn-delete"
-            @click="$emit('delete')"
-          >&times;
-          </button>
-        </div>
-        <p>{{ post.content }}</p>
-      </article>
+    <li>{{ text }}</li>
     `
-  });
-
+  })
   const vm = app.mount('#app')
 </script>
 </body>
