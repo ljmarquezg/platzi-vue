@@ -103,41 +103,65 @@
   const app = Vue.createApp({
     data() {
       return {
-        items: ['Item 1', 'Item 2', 'Item 3']
+        text: "Hello World!",
+        vText: "Bye!"
       }
     },
     methods: {
-      removeItem(index, value) {
-        this.items.splice(index, 1)
-        console.log(value);
+      updateValue(value) {
+        this.text = value
       }
     },
     template: `
-      <ul>
-        <li>
-          <v-item
-            v-for="(item, i) in items"
-            v-bind:text="item"
-            v-on:removeItem="removeItem(i, value)"
-          />
-        </li>
-      </ul>
+      <div>
+        {{ text }}
+        <v-input
+          v-bind:value="text"
+          v-on:updateTextValueEvent="updateValue"
+        />
+        <br/>
+        {{ vText }}
+        <v-input-with-v-model v-model:vText="vText"/>
+      </div>
     `
   });
 
-  app.component('v-item', {
+  app.component('v-input', {
     props: {
-      text: String
+      value: String
     },
     methods: {
-      rm() {
-        this.$emit('removeItem');
+      updateTextValueEvent(event) {
+        this.$emit('updateTextValueEvent', event.target.value)
       }
     },
     template: `
-    <li v-on:click="rm">{{ text }}</li>
+      <input
+        type="text"
+        v-bind:value="value"
+        v-on:input="updateTextValueEvent"
+      />
     `
   })
+
+  app.component('v-input-with-v-model', {
+    props: {
+      vText: String
+    },
+    methods: {
+      updateTextValueEvent(event) {
+        this.$emit('update:vText', event.target.value)
+      }
+    },
+    template: `
+      <input
+        type="text"
+        v-bind:value="vText"
+        v-on:input="updateTextValueEvent"
+      />
+    `
+  })
+
   const vm = app.mount('#app')
 </script>
 </body>
