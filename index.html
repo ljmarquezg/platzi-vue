@@ -104,63 +104,43 @@
     data() {
       return {
         text: "Hello World!",
-        vText: "Bye!"
       }
     },
-    methods: {
-      updateValue(value) {
-        this.text = value
+    provide() {
+      return {
+        otroTexto: this.text
       }
     },
     template: `
       <div>
         {{ text }}
-        <v-input
-          v-bind:value="text"
-          v-on:updateTextValueEvent="updateValue"
-        />
-        <br/>
-        {{ vText }}
-        <v-input-with-v-model v-model:vText="vText"/>
+      </div>
+      <v-child />
+    `
+  });
+
+  app.component('v-child', {
+    template: `
+      <div>
+        <h1>Child Component</h1>
+        <v-grand-child />
       </div>
     `
   });
 
-  app.component('v-input', {
-    props: {
-      value: String
-    },
-    methods: {
-      updateTextValueEvent(event) {
-        this.$emit('updateTextValueEvent', event.target.value)
+  app.component('v-grand-child', {
+    inject: {
+      otroTexto: {
+        from: 'otroTexto' // nombre de variable en provider
       }
     },
     template: `
-      <input
-        type="text"
-        v-bind:value="value"
-        v-on:input="updateTextValueEvent"
-      />
+      <div>
+        <h2>Grand Child Component</h2>
+        <p>{{ otroTexto }}</p>
+      </div>
     `
-  })
-
-  app.component('v-input-with-v-model', {
-    props: {
-      vText: String
-    },
-    methods: {
-      updateTextValueEvent(event) {
-        this.$emit('update:vText', event.target.value)
-      }
-    },
-    template: `
-      <input
-        type="text"
-        v-bind:value="vText"
-        v-on:input="updateTextValueEvent"
-      />
-    `
-  })
+  });
 
   const vm = app.mount('#app')
 </script>
